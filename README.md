@@ -1,24 +1,31 @@
-# 工程笔记
+# Engineering Notes
 
-记录给 [GPTQModel](https://github.com/ModelCloud/GPTQModel) 提交内核与修复时踩过的坑：
-为什么这么改、试过什么不work、数字是怎么量出来的。
+Field notes from work on quantized LLM inference: kernels, backends, and the
+measurements that decide whether a change was worth making.
 
-## 文章
+Each note is written to answer three questions, because those are the parts a PR
+description never has room for:
 
-- [01 · 把一个 vLLM 内核搬进 GPTQModel：AllSpark W8A16 移植记](posts/01-allspark-kernel-port.md)
+1. **Why** — what problem is being solved, and what it costs to leave unsolved.
+2. **How** — why this design, and what the alternatives would have done instead.
+3. **Evidence** — where the numbers come from, under which conditions, and what
+   could not be verified.
 
-## 为什么写这些
+## Notes
 
-内核 PR 的正文放不下过程：失败的尝试、被推翻的假设、量不出来的收益。
-但这些恰恰是下一个做同样事情的人最需要的。
+- [01 · Porting a vLLM kernel into GPTQModel: AllSpark W8A16](posts/01-allspark-kernel-port.md)
+  — why decode needs its own kernel, the N32K16 layout and cp.async pipeline,
+  and the measured numbers behind [PR #3490](https://github.com/ModelCloud/GPTQModel/pull/3490)
+  and [#3515](https://github.com/ModelCloud/GPTQModel/pull/3515).
 
-每篇都尽量写清三件事：
+## Scope
 
-1. **动机** —— 解决什么问题，不解决的代价是什么
-2. **原理** —— 为什么这么设计，换个做法会怎样
-3. **证据** —— 数字从哪来，什么条件下量的，什么没能验证
+These are practice notes, not specifications. Anything here reflects what was
+true on the hardware and versions named in the post; thresholds and kernels move.
 
-## 许可
+Corrections are welcome as issues.
 
-正文采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)，
-代码片段采用 MIT。
+## License
+
+Text is [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); code snippets
+are MIT.
